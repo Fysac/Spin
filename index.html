@@ -1,0 +1,157 @@
+﻿
+<html>
+<head>
+    <title>Gang Spin</title>
+
+</head>
+<body onload="setArrays1()">
+<!--<img src="explosion.png" alt="" id="img" /> -->
+<canvas id="myCanvas" width = "1600px" height = "900px"></canvas>
+ <script>
+     var surface;
+     var ctx
+     var happy;
+     var happy1; 
+     var angle = 0;
+     var x = new Array();
+     var y = new Array();  //locations of images
+     var x1 = new Array(); //locations for radial images. 
+     var y1 = new Array(); 
+     var speedx = new Array(5,6,7)
+     var dir = new Array()
+     var dir1 = new Array()
+     var amt1 = 0
+     var amt2 = 0; 
+     
+     function setArrays1(){
+amt1 = 6 //amount of pictures 
+amt2 = 6
+     for (d = 0; d < amt1 ; d++){
+     
+     x[d] = Math.floor(500*Math.random()) 
+     y[d] = Math.floor(500*Math.random())
+     dir[d] = Math.floor(10*Math.random())
+     dir1[d] = Math.floor(10*Math.random())
+     
+     }
+     for (d = 0; d < amt2; d++) {
+         x1[d] = Math.floor(100 * Math.random()+700)
+         y1[d] = Math.floor(100 * Math.random()+350)
+     }
+     drawCanvas()
+     }
+
+     function drawCanvas() {
+     
+
+     
+         // Get our Canvas element
+         surface = document.getElementById("myCanvas");
+         if (surface.getContext) {
+             // If Canvas is supported, load the image
+             happy = new Image();
+             happy.onload = loadingComplete;
+             happy.src = "Gang.png";
+
+             happy1 = new Image();
+             happy1.onload = loadingComplete;
+             happy1.src = "Rosca.png"; 
+             
+         }
+     }
+
+     function loadingComplete(e) {
+         // When the image has loaded begin the loop
+         setInterval(loop, 25);
+     }
+
+     function loop() {
+     
+     
+     for (i = 0; i < x.length; i++){
+     
+     
+         // Grab the context
+         ctx = surface.getContext('2d');
+         // Save the current context
+         ctx.save();
+         //optional clearScreen 
+         if(i == 0){        
+         ctx.clearRect(0,0,2000,2000)
+         }         
+         // Translate to the center point of our image 
+         ctx.translate(x[i] + happy.width * 0.5, y[i] + happy.height * 0.5);
+         //ctx.translate(x1[i] + happy.width * 0.5 - 20, y1[i] + happy.height * 0.5 - 20);
+
+         // Perform the rotation
+         ctx.rotate(DegToRad(angle));
+         // Translate back to the top left of our image
+         //ctx.translate(-x1[i] - happy.width * 0.5 + 200, -y1[i] - happy.height * 0.5 + 200);
+         ctx.translate(-x[i] - happy.width * 0.5, -y[i] - happy.height * 0.5);
+
+         //rotation of the secondary images
+
+         // Finally we draw the image
+         ctx.drawImage(happy, x[i], y[i]);
+         ctx.drawImage(happy1, x1[i], y1[i]);
+         
+if (x[i] > 1500){
+dir[i] = -dir[i]
+}
+else if (x[i] < 1){
+dir[i] = -dir[i]
+}
+
+if (y[i] > 800){
+dir1[i] = -dir1[i]
+}
+else if (y[i] < 1){
+dir1[i] = -dir1[i]
+}
+
+         
+         
+         
+         x[i] = x[i] + dir[i]
+         y[i] = y[i] + dir1[i]
+  
+         // And restore the context ready for the next loop
+         ctx.restore();      
+         //Draw other non-rotating stuff
+//         drawStuff();
+         // Increment our rotation angle
+         angle = angle + 0.5;
+     }
+     }
+
+
+     function drawStuff() {
+         ctx.beginPath();
+         ctx.lineWidth = "3";
+         ctx.strokeStyle = "blue";
+         ctx.moveTo(0, 0);
+         ctx.lineTo(200, 50);
+         ctx.moveTo(0, 0);
+         ctx.lineTo(250, 50);
+         ctx.moveTo(0, 0);
+         ctx.lineTo(200, 125);
+         ctx.rect(200, 50, 50, 75);
+         ctx.stroke();
+
+     }
+     function DegToRad(d) {
+         // Converts degrees to radians
+         return d * 0.0174532925199432957;
+     }
+     function getdistance() {
+            
+     }
+//     drawCanvas();
+    </script>
+<br />
+   <b></b><br />
+
+<!--   <input type = "button" value = "     Click     " onclick = "setArrays1()" />
+-->    
+</body>
+</html>
